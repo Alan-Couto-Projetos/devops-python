@@ -32,8 +32,6 @@ jobs:
       run: |
          pytest
 
-
-jobs:
   terraform:
     runs-on: ubuntu-latest
 
