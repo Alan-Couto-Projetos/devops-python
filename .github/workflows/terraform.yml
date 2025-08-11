@@ -3,7 +3,7 @@
 name: Terraform Provisioning
 
 on:
-  workflow_dispatch:  # Executado manualmente
+  workflow_dispatch:  # Permite a execução manual
 
 jobs:
   terraform:
