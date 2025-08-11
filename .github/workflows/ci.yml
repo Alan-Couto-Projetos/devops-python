@@ -1,3 +1,5 @@
+# .github/workflows/ci.yml
+
 name: CI Pipeline
 
 on:
@@ -52,9 +54,9 @@ jobs:
       - name: Aplicar Terraform
         run: terraform -chdir=infra apply -auto-approve
         env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_SESSION_TOKEN: ${{ secrets.AWS_SESSION_TOKEN }}
+          TF_VAR_aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }} # Correção
+          TF_VAR_aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Correção
+          TF_VAR_aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }} # Correção
           TF_VAR_aws_region: ${{ secrets.AWS_REGION }}
           TF_VAR_key_name: ${{ secrets.AWS_KEY_NAME }}
 
