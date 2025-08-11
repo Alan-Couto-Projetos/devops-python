@@ -21,8 +21,8 @@ resource "aws_instance" "teorema_bayes_ec2" {
               apt-get update -y
               apt-get install -y python3 python3-pip git
               cd /home/ubuntu
-              git clone https://github.com/Alan-Couto-Projetos/devops-python-ci
-              cd devops-python-ci
+              git clone https://github.com/Alan-Couto-Projetos/devops-python
+              cd devops-python
               pip3 install -r requirements.txt
               python3 app/main.py > resultado.txt
               EOF
