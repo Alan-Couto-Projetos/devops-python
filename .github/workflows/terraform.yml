@@ -1,9 +1,10 @@
-# .github/workflows/terraform.yml
-
+# .github\workflows\terraform.yml
 name: Terraform Provisioning
 
 on:
-  workflow_dispatch:  # Permite a execução manual
+  push:
+    branches:
+      - main
 
 jobs:
   terraform:
