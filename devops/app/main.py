@@ -1,3 +1,4 @@
+# devops\app\main.py
 def teorema_bayes(pBa, pA, pNotA, pNotBa):
     pB = pA * pBa + pNotA * pNotBa
     return (pBa * pA) / pB
