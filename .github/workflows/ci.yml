@@ -75,27 +75,25 @@ jobs:
     needs: terraform
     
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
       - name: Download do IP como Artifact (v4)
         uses: actions/download-artifact@v4
         with:
           name: public-ip
           path: . # O IP será baixado para o diretório atual
-
-      - name: Criar arquivo de chave
+      
+      - name: Executar deploy
         run: |
+          # Define o caminho para a chave SSH
+          KEY_PATH=~/.ssh/id_rsa
+
+          # Cria o diretório e o arquivo de chave SSH
           mkdir -p ~/.ssh
-          echo "${{ secrets.AWS_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-        shell: bash
+          echo "${{ secrets.AWS_PRIVATE_KEY }}" > $KEY_PATH
+          chmod 600 $KEY_PATH
 
-      - name: Conectar via SSH
-        run: |
-          # O arquivo public_ip.txt está agora no diretório raiz do job
+          # Lê o IP do arquivo e remove espaços em branco
           EC2_IP=$(cat public_ip.txt | tr -d '[:space:]')
           
           # Conecta-se via SSH usando o IP
-          ssh -i ~/.ssh/id_rsa ec2-user@$EC2_IP
+          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP
         shell: bash
