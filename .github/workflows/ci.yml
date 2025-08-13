@@ -64,24 +64,25 @@ jobs:
           # Salva o IP público da instância em um arquivo
           terraform -chdir=infra output -raw public_ip > public_ip.txt
 
-      - name: Upload do IP como Artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload do IP como Artifact (v4)
+        uses: actions/upload-artifact@v4
         with:
           name: public-ip
           path: public_ip.txt
 
   deploy:
     runs-on: ubuntu-latest
-    needs: terraform # Garante que este job só roda depois do 'terraform'
+    needs: terraform
     
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
 
-      - name: Download do IP como Artifact
-        uses: actions/download-artifact@v3
+      - name: Download do IP como Artifact (v4)
+        uses: actions/download-artifact@v4
         with:
           name: public-ip
+          path: . # O IP será baixado para o diretório atual
 
       - name: Criar arquivo de chave
         run: |
@@ -92,7 +93,7 @@ jobs:
 
       - name: Conectar via SSH
         run: |
-          # Lê o IP do arquivo e remove espaços em branco
+          # O arquivo public_ip.txt está agora no diretório raiz do job
           EC2_IP=$(cat public_ip.txt | tr -d '[:space:]')
           
           # Conecta-se via SSH usando o IP
