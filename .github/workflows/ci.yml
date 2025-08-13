@@ -65,8 +65,10 @@ jobs:
       - name: Obter IP da Instância
         id: get-ip
         run: |
-          # Captura e salva o IP como um output do passo de forma limpa
-          echo "public_ip=$(terraform -chdir=infra output -raw public_ip)" >> "$GITHUB_OUTPUT"
+          # Captura o IP em uma variável de shell para garantir que não há dados extras
+          EC2_IP=$(terraform -chdir=infra output -raw public_ip)
+          # Salva a variável limpa como um output do passo
+          echo "public_ip=$EC2_IP" >> "$GITHUB_OUTPUT"
 
   deploy:
     runs-on: ubuntu-latest
