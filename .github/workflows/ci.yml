@@ -56,8 +56,19 @@ jobs:
       - name: Inicializar Terraform
         run: terraform -chdir=infra init
 
-      - name: Aplicar Terraform
-        run: terraform -chdir=infra apply -auto-approve
+      - name: Aplicar Terraform e salvar IP
+        run: |
+          # Aplica a infraestrutura
+          terraform -chdir=infra apply -auto-approve
+
+          # Salva o IP público da instância em um arquivo
+          terraform -chdir=infra output -raw public_ip > public_ip.txt
+
+      - name: Upload do IP como Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: public-ip
+          path: public_ip.txt
 
   deploy:
     runs-on: ubuntu-latest
@@ -66,6 +77,11 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Download do IP como Artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: public-ip
 
       - name: Criar arquivo de chave
         run: |
@@ -76,5 +92,9 @@ jobs:
 
       - name: Conectar via SSH
         run: |
-          # Use a chave para fazer SSH
-          ssh -i ~/.ssh/id_rsa ec2-user@your-instance-ip
+          # Lê o IP do arquivo e remove espaços em branco
+          EC2_IP=$(cat public_ip.txt | tr -d '[:space:]')
+          
+          # Conecta-se via SSH usando o IP
+          ssh -i ~/.ssh/id_rsa ec2-user@$EC2_IP
+        shell: bash
