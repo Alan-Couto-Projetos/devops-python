@@ -86,10 +86,11 @@ jobs:
           
           EC2_IP="${{ needs.terraform.outputs.ec2_ip }}"
           
-          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP "
+          # A linha abaixo foi alterada para resolver o erro
+          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP << EOF
             git clone https://github.com/Alan-Couto-Projetos/devops-python.git
             cd devops-python
             pip3 install -r requirements.txt
             python3 devops/app/main.py > resultado.txt
-          "
+          EOF
         shell: bash
