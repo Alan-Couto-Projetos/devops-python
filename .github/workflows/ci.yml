@@ -63,10 +63,13 @@ jobs:
       - name: Obter IP da Instância
         id: get-ip
         run: |
-          # Captura o IP sem caracteres de nova linha e garante que é válido
-          EC2_IP=$(terraform -chdir=infra output -raw public_ip | tr -d '\n\r')
+          # # Captura o IP sem caracteres de nova linha e garante que é válido
+          # EC2_IP=$(terraform -chdir=infra output -raw public_ip | tr -d '\n\r')
           
-          # Salva o IP limpo como um output do passo no formato correto
+          # # Salva o IP limpo como um output do passo no formato correto
+          # echo "public_ip=${EC2_IP}" >> "$GITHUB_OUTPUT"
+
+          EC2_IP=$(terraform -chdir=infra output -raw public_ip | tr -d '\n\r')
           echo "public_ip=${EC2_IP}" >> "$GITHUB_OUTPUT"
 
   deploy:
@@ -76,6 +79,8 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+        with:
+          repository: Alan-Couto-Projetos/devops-python
 
       - name: Executar deploy
         run: |
