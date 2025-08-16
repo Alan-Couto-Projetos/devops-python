@@ -16,6 +16,7 @@ resource "aws_instance" "teorema_bayes_ec2" {
   }
 
   user_data = <<-EOF
+              user_data = <<-EOF
               #!/bin/bash
               set -e
 
@@ -23,30 +24,19 @@ resource "aws_instance" "teorema_bayes_ec2" {
               apt-get update -y
               apt-get install -y python3 python3-pip git
               
-              # Troca para o usuário 'ubuntu' para operações de clonagem e execução
-              # isso garante as permissões corretas
-              sudo -i -u ubuntu <<'EOT'
-                
-                # Log de inicialização para depuração
-                echo "Iniciando script user_data" > /home/ubuntu/user_data.log
-                
-                # Navega para o diretório de usuário
-                cd /home/ubuntu
-                
-                # Clona o repositório e instala dependências
-                git clone https://github.com/Alan-Couto-Projetos/devops-python
-                echo "Repositório clonado." >> /home/ubuntu/user_data.log
-                
-                cd devops-python
-                
-                pip3 install -r requirements.txt
-                echo "Dependências do Python instaladas." >> /home/ubuntu/user_data.log
-                
-                # Executa o script Python
-                python3 devops/app/main.py > resultado.txt
-                echo "Script Python executado com sucesso." >> /home/ubuntu/user_data.log
-              EOT
+              # Cria um diretório de trabalho no diretório temporário
+              cd /tmp
               
-              echo "Script user_data finalizado com sucesso." >> /home/ubuntu/user_data.log
-              EOF
+              # Clona o repositório como root
+              git clone https://github.com/Alan-Couto-Projetos/devops-python
+              
+              # Instala as dependências do Python
+              pip3 install -r devops-python/requirements.txt
+              
+              # Executa o script Python
+              python3 devops-python/devops/app/main.py > /tmp/resultado.txt
+              
+              # (Opcional) Limpa os arquivos temporários após a execução
+              rm -rf devops-python
+EOF
 }
