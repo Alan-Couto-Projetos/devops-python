@@ -25,25 +25,27 @@ resource "aws_instance" "teorema_bayes_ec2" {
               
               # Troca para o usuário 'ubuntu' para operações de clonagem e execução
               # isso garante as permissões corretas
-              su - ubuntu -c "
-                echo 'Iniciando script user_data' > /home/ubuntu/user_data.log
+              sudo -i -u ubuntu <<'EOT'
+                
+                # Log de inicialização para depuração
+                echo "Iniciando script user_data" > /home/ubuntu/user_data.log
                 
                 # Navega para o diretório de usuário
                 cd /home/ubuntu
                 
                 # Clona o repositório e instala dependências
                 git clone https://github.com/Alan-Couto-Projetos/devops-python
-                echo 'Repositório clonado.' >> /home/ubuntu/user_data.log
+                echo "Repositório clonado." >> /home/ubuntu/user_data.log
                 
                 cd devops-python
                 
                 pip3 install -r requirements.txt
-                echo 'Dependências do Python instaladas.' >> /home/ubuntu/user_data.log
+                echo "Dependências do Python instaladas." >> /home/ubuntu/user_data.log
                 
                 # Executa o script Python
                 python3 devops/app/main.py > resultado.txt
-                echo 'Script Python executado com sucesso.' >> /home/ubuntu/user_data.log
-              "
+                echo "Script Python executado com sucesso." >> /home/ubuntu/user_data.log
+              EOT
               
               echo "Script user_data finalizado com sucesso." >> /home/ubuntu/user_data.log
               EOF
