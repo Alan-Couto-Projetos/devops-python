@@ -16,7 +16,6 @@ resource "aws_instance" "teorema_bayes_ec2" {
   }
 
   user_data = <<-EOF
-              user_data = <<-EOF
               #!/bin/bash
               set -e
 
