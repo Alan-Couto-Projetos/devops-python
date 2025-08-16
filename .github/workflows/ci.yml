@@ -63,12 +63,6 @@ jobs:
       - name: Obter IP da Instância
         id: get-ip
         run: |
-          # # Captura o IP sem caracteres de nova linha e garante que é válido
-          # EC2_IP=$(terraform -chdir=infra output -raw public_ip | tr -d '\n\r')
-          
-          # # Salva o IP limpo como um output do passo no formato correto
-          # echo "public_ip=${EC2_IP}" >> "$GITHUB_OUTPUT"
-
           EC2_IP=$(terraform -chdir=infra output -raw public_ip | tr -d '\n\r')
           echo "public_ip=${EC2_IP}" >> "$GITHUB_OUTPUT"
 
@@ -92,10 +86,10 @@ jobs:
           EC2_IP="${{ needs.terraform.outputs.ec2_ip }}"
           
           # A linha abaixo foi alterada para resolver o erro
-          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP << EOF
-            git clone https://github.com/Alan-Couto-Projetos/devops-python.git
+          ssh -i "$KEY_PATH" -o StrictHostKeyChecking=no ec2-user@$EC2_IP "
+            # O código de clone e cd é desnecessário se o código já está na máquina
             cd devops-python
             pip3 install -r requirements.txt
             python3 devops/app/main.py > resultado.txt
-          EOF
+          "
         shell: bash
