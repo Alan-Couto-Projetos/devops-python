@@ -1,8 +1,9 @@
+#infra\main.tf
 provider "aws" {
-  region          = var.aws_region
-  access_key      = var.aws_access_key
-  secret_key      = var.aws_secret_key
-  token           = var.aws_session_token
+  region                  = var.aws_region
+  access_key              = var.aws_access_key
+  secret_key              = var.aws_secret_key
+  token                   = var.aws_session_token
 }
 
 resource "aws_instance" "teorema_bayes_ec2" {
@@ -47,34 +48,3 @@ resource "aws_instance" "teorema_bayes_ec2" {
               EOF
 }
 
-#infra/outputs.tf
-output "public_ip" {
-  description = "IP público da instância EC2"
-  value       = aws_instance.teorema_bayes_ec2.public_ip
-}
-
-#infra/variables.tf
-variable "aws_region" {
-  description = "Região da AWS"
-  type        = string
-}
-
-variable "aws_access_key" {
-  description = "Chave pública temporária"
-  type        = string
-}
-
-variable "aws_secret_key" {
-  description = "Chave secreta temporária"
-  type        = string
-}
-
-variable "aws_session_token" {
-  description = "Token temporário do AWS Academy"
-  type        = string
-}
-
-variable "key_name" {
-  description = "O nome do par de chaves SSH para a instância EC2."
-  type        = string
-}
