@@ -1,5 +1,3 @@
-# .github/workflows/ci.yml
-
 name: CI Pipeline
 
 on:
@@ -65,9 +63,10 @@ jobs:
       - name: Obter IP da Instância
         id: get-ip
         run: |
-          # Captura o IP em uma variável de shell para garantir que não há dados extras
-          EC2_IP=$(terraform -chdir=infra output -raw public_ip)
-          # Salva a variável limpa como um output do passo
+          # Executa o comando e filtra a saída para obter apenas o IP
+          EC2_IP=$(terraform -chdir=infra output -raw public_ip | grep -oP '\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b')
+          
+          # Salva o IP limpo como um output do passo
           echo "public_ip=$EC2_IP" >> "$GITHUB_OUTPUT"
 
   deploy:
@@ -87,5 +86,11 @@ jobs:
           
           EC2_IP="${{ needs.terraform.outputs.ec2_ip }}"
           
-          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP
+          # Copia o código para a instância EC2 e executa
+          ssh -i $KEY_PATH -o StrictHostKeyChecking=no ec2-user@$EC2_IP "
+            git clone https://github.com/Alan-Couto-Projetos/devops-python.git
+            cd devops-python
+            pip3 install -r requirements.txt
+            python3 devops/app/main.py > resultado.txt
+          "
         shell: bash
