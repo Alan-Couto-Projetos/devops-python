@@ -3,11 +3,12 @@ import pytest
 from app.main import teorema_bayes
 
 def test_teorema_bayes():
+
+    # Testa o cálculo com valores esperados.
     assert teorema_bayes(2, 3, 2, 2) == 0.6
     assert teorema_bayes(-1, 1, -1, 1) == 0.5
     
+    # Testa se a função levanta um erro de ZeroDivisionError
     with pytest.raises(ZeroDivisionError):
         teorema_bayes(0, 0, 0, 0)
 
-
-print(test_teorema_bayes)

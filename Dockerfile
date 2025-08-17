@@ -13,5 +13,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Comando que será executado quando o contêiner iniciar.
-# O caminho agora reflete a estrutura de diretórios correta.
 CMD ["python", "devops/app/main.py"]

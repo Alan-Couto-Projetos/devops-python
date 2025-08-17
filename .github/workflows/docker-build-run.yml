@@ -1,15 +1,19 @@
 # .github/workflows/docker-build-run.yml
 name: Build and Run Docker Container
 
+# Quando o pipeline será executado.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
+# Tarefas que serão executadas.
 jobs:
   build-and-run:
     runs-on: ubuntu-latest
+
+    # Passo a passo que deve ser executado.
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
