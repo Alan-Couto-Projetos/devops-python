@@ -11,11 +11,6 @@ jobs:
   terraform:
     runs-on: ubuntu-latest
 
-    # Definimos a variável de ambiente para o diretório do Terraform.
-    # Isso torna os comandos mais limpos.
-    env:
-      TF_DIR: infra
-
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
