@@ -1,0 +1,23 @@
+# .github/workflows/docker-build-run.yml
+name: Build and Run Docker Container
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Build da imagem Docker
+        run: docker build -t python-teorema-bayes:1.0.0 .
+
+      - name: Executar contêiner e mostrar o resultado
+        run: |
+          docker run --rm python-teorema-bayes:1.0.0
+
