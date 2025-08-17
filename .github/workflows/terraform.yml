@@ -1,5 +1,5 @@
 # .github/workflows/terraform.yml
-name: CI Pipeline
+name: terraform
 
 on:
   push:
