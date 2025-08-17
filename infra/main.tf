@@ -22,19 +22,19 @@ resource "aws_instance" "teorema_bayes_ec2" {
               # Atualiza os pacotes e instala as dependências como root
               apt-get update -y
               apt-get install -y python3 python3-pip git
-              
+                          
               # Cria um diretório de trabalho no diretório temporário
               cd /tmp
-              
+                          
               # Clona o repositório como root
               git clone https://github.com/Alan-Couto-Projetos/devops-python
-              
+                          
               # Instala as dependências do Python
               pip3 install -r devops-python/requirements.txt
-              
-              # Executa o script Python
+                          
+              # Executa o script Python com o caminho corrigido
               python3 devops-python/devops/app/main.py > /tmp/resultado.txt
-              
+                          
               # (Opcional) Limpa os arquivos temporários após a execução
               rm -rf devops-python
 EOF
