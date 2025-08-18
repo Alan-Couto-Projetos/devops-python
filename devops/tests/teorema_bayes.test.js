@@ -24,8 +24,8 @@ describe('teorema_bayes', () => {
         const pNotBa = 0.05;
         const resultadoEsperado = 0.153;
         const resultado = teorema_bayes(pBa, pA, pNotA, pNotBa);
-        // Usamos toFixed para comparar com a precisão esperada
-        expect(parseFloat(resultado.toFixed(3))).toBe(resultadoEsperado);
+        // Usamos toBeCloseTo para comparar com precisão de 3 casas decimais
+        expect(resultado).toBeCloseTo(resultadoEsperado, 3);
     });
 
     // Teste 2: Caso de uso com probabilidades diferentes
@@ -36,8 +36,8 @@ describe('teorema_bayes', () => {
         const pNotBa = 0.1;
         const resultadoEsperado = 0.8888;
         const resultado = teorema_bayes(pBa, pA, pNotA, pNotBa);
-        // Usamos toFixed para garantir a precisão
-        expect(parseFloat(resultado.toFixed(4))).toBe(resultadoEsperado);
+        // Usamos toBeCloseTo para garantir a precisão de 4 casas decimais
+        expect(resultado).toBeCloseTo(resultadoEsperado, 4);
     });
 
     // Teste 3: Caso de erro - divisão por zero
