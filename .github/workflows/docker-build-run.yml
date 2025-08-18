@@ -1,27 +1,27 @@
-# .github/workflows/docker-build-run.yml
-name: Build and Run Docker Container
+# # .github/workflows/docker-build-run.yml
+# name: Build and Run Docker Container
 
-# Quando o pipeline será executado.
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# # Quando o pipeline será executado.
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-# Tarefas que serão executadas.
-jobs:
-  build-and-run:
-    runs-on: ubuntu-latest
+# # Tarefas que serão executadas.
+# jobs:
+#   build-and-run:
+#     runs-on: ubuntu-latest
 
-    # Passo a passo que deve ser executado.
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+#     # Passo a passo que deve ser executado.
+#     steps:
+#       - name: Checkout do código
+#         uses: actions/checkout@v3
 
-      - name: Build da imagem Docker
-        run: docker build -t python-teorema-bayes:1.0.0 .
+#       - name: Build da imagem Docker
+#         run: docker build -t python-teorema-bayes:1.0.0 .
 
-      - name: Executar contêiner e mostrar o resultado
-        run: |
-          docker run --rm python-teorema-bayes:1.0.0
+#       - name: Executar contêiner e mostrar o resultado
+#         run: |
+#           docker run --rm python-teorema-bayes:1.0.0
 
