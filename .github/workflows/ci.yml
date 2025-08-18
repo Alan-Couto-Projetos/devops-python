@@ -1,4 +1,3 @@
-# .github/workflows/ci.yml
 name: CI Pipeline Web
 
 # O pipeline será executado em cada push e pull request para o branch 'main'.
@@ -31,8 +30,7 @@ jobs:
         # Executa os testes JavaScript com o Jest.
         run: npx jest
 
-
-      # Etapa de Implantação Contínua (CD)
+      # --- Etapa de Implantação Contínua (CD) ---
       - name: Configurar Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -41,15 +39,19 @@ jobs:
       - name: Inicializar Terraform
         id: init
         run: terraform init
+        working-directory: ./infra
 
       - name: Planejar a implantação
         id: plan
         run: terraform plan
+        working-directory: ./infra
 
       - name: Aplicar a infraestrutura simulada
         id: apply
         run: terraform apply -auto-approve
+        working-directory: ./infra
 
       - name: Exibir a URL do site implantado
         run: |
           echo "Site implantado com sucesso no caminho: $(terraform output site_url)"
+        working-directory: ./infra
