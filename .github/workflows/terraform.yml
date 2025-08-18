@@ -1,20 +1,23 @@
 # .github/workflows/terraform.yml
 name: Terraform CI/CD
 
+# Quando o pipeline será executado.
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
 
+# Tarefas que serão executadas.
 jobs:
   terraform:
     runs-on: ubuntu-latest
     
-    # Define o diretório de trabalho do Terraform.
+    # Diretório de trabalho do Terraform.
     env:
       TF_DIR: infra
 
+    # Passo a passo que deve ser executado.
     steps:
       - name: Checkout do código
         uses: actions/checkout@v3
@@ -28,5 +31,6 @@ jobs:
         run: terraform -chdir=$TF_DIR init
 
       - name: Aplicar Terraform
-        # O comando 'apply' agora criará o contêiner e capturará a saída.
+      
+        # O 'apply' agora criará o contêiner e capturará a saída.
         run: terraform -chdir=$TF_DIR apply -auto-approve
