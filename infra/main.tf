@@ -31,6 +31,4 @@ resource "docker_container" "python_app_container" {
 
   # A saída do script capturada pelo Terraform.
   logs         = true
-  # Saída do script enviada para o stdout.
-  log_stdout   = true
 }
