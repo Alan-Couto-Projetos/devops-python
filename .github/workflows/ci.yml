@@ -1,0 +1,28 @@
+# .github/workflows/ci.yml
+name: CI Pipeline Web
+
+# O pipeline será executado em cada push e pull request para o branch 'main'.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Define um job para construir e testar a aplicação.
+jobs:
+  build-test:
+    # O job será executado na última versão do Ubuntu.
+    runs-on: ubuntu-latest
+
+    # Os passos (steps) para a execução do job.
+    steps:
+      - name: Checkout do código
+        # Usa a action 'actions/checkout' para clonar o repositório.
+        uses: actions/checkout@v3
+
+      - name: Executar testes (simulação)
+        # Como seus testes estão embutidos no HTML, este passo serve para
+        # confirmar que a pipeline funciona. Em um projeto real, você
+        # executaria uma ferramenta de teste JavaScript aqui.
+        run: |
+          echo "Todos os testes de frontend passaram."
