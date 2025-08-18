@@ -20,9 +20,19 @@ jobs:
         # Usa a action 'actions/checkout' para clonar o repositório.
         uses: actions/checkout@v3
 
-      - name: Executar testes (simulação)
-        # Como seus testes estão embutidos no HTML, este passo serve para
-        # confirmar que a pipeline funciona. Em um projeto real, você
-        # executaria uma ferramenta de teste JavaScript aqui.
-        run: |
-          echo "Todos os testes de frontend passaram."
+      - name: Configurar Node.js
+        # Configura o ambiente Node.js para rodar os testes.
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Instalar dependências de teste
+        # Instala o Jest para rodar os testes.
+        # Aqui, você precisaria de um arquivo package.json com a dependência
+        # do Jest. Como não temos um, instalamos diretamente.
+        run: npm install jest
+
+      - name: Executar testes de frontend
+        # Executa os testes JavaScript com o Jest. O Jest busca
+        # automaticamente por arquivos com o padrão .test.js
+        run: npx jest
