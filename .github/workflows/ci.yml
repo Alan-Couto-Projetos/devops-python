@@ -8,31 +8,48 @@ on:
   pull_request:
     branches: [main]
 
-# Define um job para construir e testar a aplicação.
+# Trabalhos da aplicação.
 jobs:
   build-test:
-    # O job será executado na última versão do Ubuntu.
     runs-on: ubuntu-latest
 
-    # Os passos (steps) para a execução do job.
+    # Passos que serão executados.
     steps:
       - name: Checkout do código
-        # Usa a action 'actions/checkout' para clonar o repositório.
         uses: actions/checkout@v3
 
       - name: Configurar Node.js
-        # Configura o ambiente Node.js para rodar os testes.
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
       - name: Instalar dependências de teste
-        # Instala o Jest para rodar os testes.
-        # Aqui, você precisaria de um arquivo package.json com a dependência
-        # do Jest. Como não temos um, instalamos diretamente.
+        # Instala o Jest.
         run: npm install jest
 
       - name: Executar testes de frontend
-        # Executa os testes JavaScript com o Jest. O Jest busca
-        # automaticamente por arquivos com o padrão .test.js
+        # Executa os testes JavaScript com o Jest.
         run: npx jest
+
+
+      # Etapa de Implantação Contínua (CD)
+      - name: Configurar Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.0
+
+      - name: Inicializar Terraform
+        id: init
+        run: terraform init
+
+      - name: Planejar a implantação
+        id: plan
+        run: terraform plan
+
+      - name: Aplicar a infraestrutura simulada
+        id: apply
+        run: terraform apply -auto-approve
+
+      - name: Exibir a URL do site implantado
+        run: |
+          echo "Site implantado com sucesso no caminho: $(terraform output site_url)"

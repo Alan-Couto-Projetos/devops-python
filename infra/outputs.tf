@@ -1,6 +1,5 @@
-# infra/outputs.tf
-# Exibe a URL do bucket como um output do Terraform.
+# Exibe a localização do arquivo simulado como a URL do site.
 output "site_url" {
-  description = "URL do site estático hospedado no bucket GCS."
-  value       = "http://storage.googleapis.com/${google_storage_bucket.static_site_bucket.name}/index.html"
+  description = "A localização do site implantado no ambiente simulado."
+  value       = local_file.simulated_static_site.filename
 }
