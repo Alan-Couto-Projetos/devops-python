@@ -1,34 +1,33 @@
 # infra/main.tf
-
-# Provedor Terraform para interagir com o Docker.
+# Define o provedor Terraform para o Google Cloud.
 terraform {
   required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 2.20"
+    google = {
+      source  = "hashicorp/google"
+      version = "4.51.0"
     }
   }
 }
 
-provider "docker" {}
+provider "google" {
+  project = var.gcp_project_id
+  region  = "us-central1"
+}
 
-# Constrói a imagem Docker com o Dockerfile.
-resource "docker_image" "python_app_image" {
-  name = "python-teorema-bayes:1.0.0"
-  build {
-    context    = "../"
-    dockerfile = "../Dockerfile"
+# Cria um bucket no Google Cloud Storage para hospedagem do site estático.
+resource "google_storage_bucket" "static_site_bucket" {
+  name          = "${var.gcp_project_id}-site"
+  location      = "US"
+  force_destroy = true
+
+  # Habilita a hospedagem de site estático e define o arquivo principal.
+  website {
+    main_page_suffix = "index.html"
   }
 }
 
-# Cria e executa o contêiner Docker.
-resource "docker_container" "python_app_container" {
-  name  = "teorema-bayes-runner"
-  image = docker_image.python_app_image.name
-
-  # O comando executado no contêiner.
-  entrypoint = ["python", "devops/app/main.py"]
-
-  # A saída do script capturada pelo Terraform.
-  logs         = true
+# Define uma variável para o ID do projeto GCP.
+variable "gcp_project_id" {
+  type        = string
+  description = "ID do projeto GCP onde os recursos serão criados."
 }

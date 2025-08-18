@@ -1,0 +1,48 @@
+# .github/workflows/ci-cd.yml
+name: CD de Site Estático
+
+# Este fluxo de trabalho é acionado em push ou pull request para o branch 'main'.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Variáveis de ambiente para o ID do projeto GCP e credenciais.
+env:
+  GCP_PROJECT_ID: "SEU_ID_DO_PROJETO_GCP"
+  GCP_CREDENTIALS: ${{ secrets.GCP_CREDENTIALS }}
+
+# Jobs que serão executados.
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Configurar o Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.5.7
+
+      - name: Autenticar no GCP
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ env.GCP_CREDENTIALS }}
+
+      - name: Configurar gcloud
+        uses: google-github-actions/setup-gcloud@v1
+
+      - name: Inicializar Terraform
+        run: terraform -chdir=infra init
+
+      - name: Aplicar Terraform
+        # Cria o bucket GCS usando o Terraform.
+        run: terraform -chdir=infra apply -var="gcp_project_id=${{ env.GCP_PROJECT_ID }}" -auto-approve
+
+      - name: Implantar arquivo HTML
+        # Faz o upload do arquivo HTML para o bucket GCS.
+        run: gsutil cp ./web-app/index.html gs://${{ env.GCP_PROJECT_ID }}-site/index.html

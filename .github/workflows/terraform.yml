@@ -1,36 +1,36 @@
-# .github/workflows/terraform.yml
-name: Terraform CI/CD
+# # .github/workflows/terraform.yml
+# name: Terraform CI/CD
 
-# Quando o pipeline será executado.
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
+# # Quando o pipeline será executado.
+# on:
+#   push:
+#     branches: [main]
+#   pull_request:
+#     branches: [main]
 
-# Tarefas que serão executadas.
-jobs:
-  terraform:
-    runs-on: ubuntu-latest
+# # Tarefas que serão executadas.
+# jobs:
+#   terraform:
+#     runs-on: ubuntu-latest
     
-    # Diretório de trabalho do Terraform.
-    env:
-      TF_DIR: infra
+#     # Diretório de trabalho do Terraform.
+#     env:
+#       TF_DIR: infra
 
-    # Passo a passo que deve ser executado.
-    steps:
-      - name: Checkout do código
-        uses: actions/checkout@v3
+#     # Passo a passo que deve ser executado.
+#     steps:
+#       - name: Checkout do código
+#         uses: actions/checkout@v3
 
-      - name: Configurar Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-          terraform_version: 1.5.7
+#       - name: Configurar Terraform
+#         uses: hashicorp/setup-terraform@v2
+#         with:
+#           terraform_version: 1.5.7
 
-      - name: Inicializar Terraform
-        run: terraform -chdir=$TF_DIR init
+#       - name: Inicializar Terraform
+#         run: terraform -chdir=$TF_DIR init
 
-      - name: Aplicar Terraform
+#       - name: Aplicar Terraform
       
-        # O 'apply' agora criará o contêiner e capturará a saída.
-        run: terraform -chdir=$TF_DIR apply -auto-approve
+#         # O 'apply' agora criará o contêiner e capturará a saída.
+#         run: terraform -chdir=$TF_DIR apply -auto-approve

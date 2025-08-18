@@ -1,7 +1,6 @@
 # infra/outputs.tf
-# Este arquivo captura a saída do contêiner para que ela seja exibida
-# nos logs do Terraform.
-output "container_logs" {
-  description = "Logs de saída do contêiner."
-  value       = docker_container.python_app_container.logs
+# Exibe a URL do bucket como um output do Terraform.
+output "site_url" {
+  description = "URL do site estático hospedado no bucket GCS."
+  value       = "http://storage.googleapis.com/${google_storage_bucket.static_site_bucket.name}/index.html"
 }
