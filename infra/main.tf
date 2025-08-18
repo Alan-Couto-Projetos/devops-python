@@ -1,5 +1,6 @@
 # infra/main.tf
-# Define o provedor Terraform para interagir com o Docker.
+
+# Provedor Terraform para interagir com o Docker.
 terraform {
   required_providers {
     docker = {
@@ -11,8 +12,7 @@ terraform {
 
 provider "docker" {}
 
-# Constrói a imagem Docker a partir do Dockerfile na raiz do projeto.
-# O Terraform gerencia o ciclo de vida dessa imagem.
+# Constrói a imagem Docker com o Dockerfile.
 resource "docker_image" "python_app_image" {
   name = "python-teorema-bayes:1.0.0"
   build {
@@ -21,18 +21,16 @@ resource "docker_image" "python_app_image" {
   }
 }
 
-# Cria e executa o contêiner Docker a partir da imagem.
-# A flag 'rm = true' foi removida para permitir que o Terraform gerencie
-# o estado do contêiner e capture sua saída.
+# Cria e executa o contêiner Docker.
 resource "docker_container" "python_app_container" {
   name  = "teorema-bayes-runner"
   image = docker_image.python_app_image.name
 
-  # O comando que será executado no contêiner.
+  # O comando executado no contêiner.
   entrypoint = ["python", "devops/app/main.py"]
 
-  # A saída do script será capturada pelo Terraform.
+  # A saída do script capturada pelo Terraform.
   logs         = true
-  # Garante que a saída do script seja enviada para o stdout (saída padrão).
+  # Saída do script enviada para o stdout.
   log_stdout   = true
 }
