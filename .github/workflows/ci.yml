@@ -1,6 +1,6 @@
 name: CI Pipeline Web
 
-# O pipeline será executado em cada push e pull request para o branch 'main'.
+# Execução do pipeline.
 on:
   push:
     branches: [main]
@@ -23,14 +23,12 @@ jobs:
           node-version: '18'
 
       - name: Instalar dependências de teste
-        # Instala o Jest.
         run: npm install jest
 
       - name: Executar testes de frontend
-        # Executa os testes JavaScript com o Jest.
         run: npx jest
 
-      # --- Etapa de Implantação Contínua (CD) ---
+      # Etapa de Implantação Contínua (CD)
       - name: Configurar Terraform
         uses: hashicorp/setup-terraform@v2
         with:
