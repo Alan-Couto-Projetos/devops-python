@@ -30,6 +30,11 @@ jobs:
         # Executa os testes JavaScript com o Jest.
         run: npx jest
 
+      - name: Build do site para a pasta dist
+        run: |
+          mkdir dist
+          cp index.html dist/index.html
+
       # --- Etapa de Implantação Contínua (CD) ---
       - name: Configurar Terraform
         uses: hashicorp/setup-terraform@v2
