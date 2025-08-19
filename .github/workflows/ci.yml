@@ -53,5 +53,5 @@ jobs:
 
       - name: Exibir a URL do site implantado
         run: |
-          echo "Site implantado com sucesso no caminho: $(terraform output site_url)"
+          echo "Site implantado com sucesso no caminho: $(terraform output -raw site_url)"
         working-directory: ./infra
